@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "52a0eb84-ae55-4083-a1e1-157683189276",
+		"name": "Day8: Output test results",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26635374"
+	},
+	"item": [
+		{
+			"name": "Output test results",
+			"item": [
+				{
+					"name": "Get Canadian User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json()\r",
+									"pm.collectionVariables.set(\"gender\", res.results[0].gender)\r",
+									"pm.collectionVariables.set(\"city\", res.results[0].location.city)\r",
+									"pm.collectionVariables.set(\"firstName\",res.results[0].name.first)\r",
+									"pm.collectionVariables.set(\"lastName\",res.results[0].name.last)\r",
+									"pm.collectionVariables.set(\"email\",res.results[0].email)\r",
+									"pm.collectionVariables.set(\"uuid\",res.results[0].login.uuid)\r",
+									"pm.collectionVariables.set(\"UserOfname\", pm.collectionVariables.get(\"firstName\") + \" \" + pm.collectionVariables.get(\"lastName\"))\r",
+									"console.log(res.results[0].email)\r",
+									"console.log(res.results[0].name.first)\r",
+									"console.log(res.results[0].name.last)\r",
+									"pm.test(`Returns correct email: ${pm.collectionVariables.get('email')}`, function () {\r",
+									"})\r",
+									"pm.test(\"Response get Canadian\", function () {\r",
+									"    //pm.expect(res.response).to.be.an('array')\r",
+									"    pm.expect(res.results[0].location.street.number).to.be.a('number')\r",
+									"    pm.expect(res.results[0].gender).equals(pm.collectionVariables.get('gender'))\r",
+									"})\r",
+									"pm.test(`Returns correct name: ${pm.collectionVariables.get('UserOfname')}`, function () {\r",
+									"})\r",
+									"pm.test(`Response get gender: ${pm.collectionVariables.get('gender')}`, function () {\r",
+									"})\r",
+									"pm.test(`Response get city: ${pm.collectionVariables.get('city')}`, function () {\r",
+									"})\r",
+									"\r",
+									"console.log()"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://randomuser.me/api?nat=CA",
+							"protocol": "https",
+							"host": [
+								"randomuser",
+								"me"
+							],
+							"path": [
+								"api"
+							],
+							"query": [
+								{
+									"key": "nat",
+									"value": "CA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Echo The User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"///let username = pm.collectionVariables.get(\"firstName\") + \" \" + pm.collectionVariables.get(\"lastName\")\r",
+									"//pm.collectionVariables.set(\"UserOfname\", pm.collectionVariables.get(\"firstName\") +\" \"+ pm.collectionVariables.get(\"lastName\"))\r",
+									"let res = pm.response.json()\r",
+									"console.log(pm.collectionVariables.get(\"UserOfname\"))\r",
+									"console.log(pm.collectionVariables.get(\"email\"))\r",
+									"console.log(pm.collectionVariables.get(\"uuid\"))\r",
+									"pm.collectionVariables.set(\"host\",res.headers.host)\r",
+									"pm.collectionVariables.set(\"url\",res.url)\r",
+									"pm.collectionVariables.set(\"email\",res.email)\r",
+									" pm.collectionVariables.set(\"uuid\",res.data.uuid)\r",
+									"//pm.collectionVariables.set(\"proto\",res.headers.x-forwarded-proto)\r",
+									"//pm.collectionVariables.set(\"port\",res.headers.x-forwarded-port)\r",
+									"//console.log(\"port\",res.headers.x-forwarded-port)\r",
+									"pm.test(\"Response get data\", function () {\r",
+									"    pm.expect(res.data.name).equals(pm.collectionVariables.get('UserOfname'))\r",
+									"   // pm.expect(res.data.email).equals(pm.collectionVariables.get('email'))\r",
+									"    pm.expect(res.data.uuid).equals(pm.collectionVariables.get('uuid'))\r",
+									"})\r",
+									"pm.test(`Response get email:${pm.collectionVariables.get('email')}`, function () {\r",
+									"\r",
+									"})\r",
+									"pm.test(`Response get host:${pm.collectionVariables.get('host')}`, function () {\r",
+									"})\r",
+									"pm.test(`Response get url:${pm.collectionVariables.get('url')}`, function () {\r",
+									"})\r",
+									"//pm.test(\"Response get headers\", function () {\r",
+									"//pm.expect(res.headers.x-forwarded-proto).equals(pm.collectionVariables.get('proto'))\r",
+									"//pm.expect(res.headers.x-forwarded-port).equals(pm.collectionVariables.get('port')) \r",
+									"//pm.expect(res.headers.content-length).to.be.a('number') \r",
+									"//})\r",
+									"if (pm.response.code === 200) {\r",
+									" // add code here to unset collection variables\r",
+									" // that are no longer needed to persist\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"{{UserOfname}}\",\r\n\"email\": \"{{email}}\",\r\n\"uuid\": \"{{uuid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teardown",
+			"item": [
+				{
+					"name": "Teardown",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "gender",
+			"value": ""
+		},
+		{
+			"key": "city",
+			"value": ""
+		},
+		{
+			"key": "UserOfname",
+			"value": ""
+		},
+		{
+			"key": "host",
+			"value": ""
+		},
+		{
+			"key": "url",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"key": "uuid",
+			"value": ""
+		}
+	]
+}
